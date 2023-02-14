@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RestaurantFinder from "../apis/RestaurantFinder";
 import { RestaurantsContext } from "../context/RestaurantsContext";
+import StarRating from "./StarRating";
 
 const RestaurantList = () => {
   // useContext is being used to allow sharing the same "state" with the AddRestaurants
@@ -45,6 +46,7 @@ const RestaurantList = () => {
   };
 
   const handleRestaurantSelect = (id) => {
+    console.log({id})
     navigate(`/restaurants/${id}`);
   };
 
@@ -64,6 +66,8 @@ const RestaurantList = () => {
         <tbody>
           {restaurants &&
             restaurants.map((restaurant) => {
+              console.log({restaurant});
+              console.log(restaurant.id);
               return (
                 <tr
                   onClick={() => handleRestaurantSelect(restaurant.id)}
@@ -72,7 +76,9 @@ const RestaurantList = () => {
                   <td>{restaurant.name}</td>
                   <td>{restaurant.location}</td>
                   <td>{"$".repeat(restaurant.price_range)}</td>
-                  <td>reviews</td>
+                  <td>
+                    <StarRating rating={restaurant.avg_rating} />
+                  </td>
                   <td>
                     <button
                       onClick={(e) => handleUpdate(e, restaurant.id)}

@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import RestaurantFinder from "../apis/RestaurantFinder";
 import AddReview from "../components/AddReview";
 import Reviews from "../components/Reviews";
-import StarRating from "../components/StarRating";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 import { ReviewsContextProvider } from "../context/ReviewsContext";
 
@@ -12,6 +11,13 @@ const RestaurantDetailPage = () => {
   const { id } = useParams();
   const { selectedRestaurant, setSelectedRestaurant } =
     useContext(RestaurantsContext);
+
+  let navigate = useNavigate();
+
+  const handleHomePage = (e) => {
+    e.stopPropagation();
+    navigate(`/`);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,9 +33,22 @@ const RestaurantDetailPage = () => {
       <div>
         {selectedRestaurant && (
           <>
-            <div className="mt-3">
-              <Reviews id={id} amit="kofa"/>
+            <div>
+              <body>
+                <button type="button"
+                  onClick={(e) => handleHomePage(e)}
+                  className="btn btn-outline-dark"
+                >
+                  Home
+                </button>
+              </body>
             </div>
+            <h1 className="text-center display-1">{selectedRestaurant.name}</h1>
+
+            <div className="mt-3">
+              <Reviews id={id} />
+            </div>
+
             <AddReview />
           </>
         )}

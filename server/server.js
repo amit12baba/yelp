@@ -47,14 +47,23 @@ app.get("/api/restaurants/:id", async (req, res) => {
 
 // get all reviews for restaurant
 app.get("/api/restaurants/:id/reviews", async (req, res) => {
-const reataurantID = req.params.id
+  const reataurantID = req.params.id;
   const reviews = await queries.getAllReviews(reataurantID);
   res.status(200).json({
     status: "success",
     results: reviews.length,
-    data: reviews
+    data: reviews,
   });
 });
+
+// creat a review
+app.post("/api/restaurants/:id/reviews", async (req, res) => {
+  console.log(req.body);
+  const restaurantID = req.params.id
+  const review = await queries.createOneReview(restaurantID, req.body.name, req.body.rating, req.body.review)
+  res.status(200).json(review);
+});
+
 
 // Create (POST) a restaurant
 app.post("/api/restaurants", async (req, res) => {
@@ -102,6 +111,8 @@ app.delete("/api/restaurants/:id", async (req, res) => {
 });
 
 const port = 3005;
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
